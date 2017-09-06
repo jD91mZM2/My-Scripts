@@ -1,0 +1,93 @@
+input = $stdin.read
+
+string = ""
+had_space = false
+input.split("").each do |x|
+	word = ""
+	case x
+	when "#"
+		word = "hash"
+	when "$"
+		word = "dollar"
+	when "!"
+		word = "exlamation mark"
+	when "?"
+		word = "question mark"
+	when "&"
+		word = "and"
+	when "@"
+		word = "at"
+	when "="
+		word = "equal"
+	when "*"
+		word = "times"
+	when "+"
+		word = "plus"
+	when "%"
+		word = "percent"
+	when "/"
+		word = "slash"
+	when "\\"
+		word = "backslash"
+	when "-"
+		word = "dash"
+	when ":"
+		word = "colon"
+	when "."
+		word = "dot"
+	when ","
+		word = "comma"
+	when "\""
+		word = "quote"
+	when "'"
+		word = "single quote"
+	when "(", ")"
+		word = "parenthensis"
+	when "{", "}"
+		word = "curly bracket"
+	when "[", "]"
+		word = "bracket"
+	when "|"
+		word = "pipeline"
+	when "`"
+		word = "backtick"
+	when "0"
+		word = "zero"
+	when "1"
+		word = "one"
+	when "2"
+		word = "two"
+	when "3"
+		word = "three"
+	when "4"
+		word = "four"
+	when "5"
+		word = "five"
+	when "6"
+		word = "six"
+	when "7"
+		word = "seven"
+	when "8"
+		word = "eight"
+	when "9"
+		word = "nine"
+	when "<"
+		word = "less than"
+	when ">"
+		word = "greater than"
+	when "_"
+		word = "underscore"
+	else
+		string += x
+		had_space = false
+		next
+	end
+
+	if !had_space
+		string += " "
+	end
+	string += word + " "
+
+	had_space = true
+end
+puts string.strip
