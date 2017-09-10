@@ -22,10 +22,10 @@ id = gets.strip
 
 puts
 
-loop {
+loop do
     body = session.from_ids(["t1_" + id]).to_ary[0].body
     puts body
     matches = /\(https?:\/\/(?:www.)?reddit\.com\/.*\/([a-zA-Z0-9]+)\/?(?:\?.*)?\)/.match(body)
     break if matches.nil?
     id = matches[1]
-}
+end
