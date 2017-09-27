@@ -1,6 +1,7 @@
 print "Input: ";
 input = gets.chomp;
 
+puts "Useful shifts: 'Lowercase Italic' = 119789 'Lowercase Bold' = 119737"
 print "Shift: "
 shift = Integer(gets.chomp)
 
