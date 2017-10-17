@@ -1,7 +1,7 @@
 #!/bin/sh
 
 while true; do
-    echo -n "Checking...\r"
+    printf "Checking...\r"
     curl http://bot.whatismyipaddress.com/
     echo
     sleep 5
