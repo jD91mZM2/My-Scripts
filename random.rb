@@ -10,7 +10,7 @@ begin
     ilen = Integer(len)
 rescue ArgumentError
     puts "Not a number"
-    exit;
+    exit
 end
 
 dic = "abcdefghiklmnopqrstuvwxyzABCDEFGHIKLMNOPQRSTUVWXYZ0123456789"

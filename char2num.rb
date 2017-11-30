@@ -1,15 +1,15 @@
-print "Please enter characters: ";
-chars = gets.strip;
+print "Please enter characters: "
+chars = gets.strip
 
-result = "";
-first = true;
+result = ""
+first = true
 for i in chars.split("") do
 	if first
-		first = false;
+		first = false
 	else
-		result += ", ";
+		result += ", "
 	end
-	result += i.ord.to_s;
+	result += i.ord.to_s
 end
 
-puts result;
+puts result

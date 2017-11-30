@@ -1,21 +1,21 @@
-sleep(5);
+sleep(5)
 
-exited = false;
+exited = false
 trap("INT") do
-	exited = true;
+	exited = true
 end
 
 while true do
 	if exited then
-		break;
+		break
 	end
-	dic = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	text = "";
+	dic = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	text = ""
 	for i in 1..15
-		text += dic[rand(dic.length)];
+		text += dic[rand(dic.length)]
 	end
-	system("xdotool type " + text);
-	system("xdotool key Return");
+	system("xdotool type " + text)
+	system("xdotool key Return")
 
-	sleep(1);
+	sleep(1)
 end

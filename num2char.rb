@@ -1,14 +1,14 @@
-print "Numbers (separated by space): ";
-input = gets.strip;
+print "Numbers (separated by space): "
+input = gets.strip
 
-result = "";
+result = ""
 for i in input.split(/,? /) do
 	begin
-		result += Integer(i).chr;
+		result += Integer(i).chr
 	rescue ArgumentError
-		puts "Not a number.";
-		exit;
+		puts "Not a number."
+		exit
 	end
 end
 
-puts result;
+puts result
