@@ -5,7 +5,7 @@ def shift(text, step)
 	max = maxTotal - min
 
 	result = ""
-	for char in text.split("")
+	for char in text.chars
 		code = char.ord
 
 		if code < min || code > maxTotal then
@@ -27,6 +27,6 @@ end
 print "Input: "
 input = gets.chomp.upcase
 
-for i in (-10..10) do
+for i in (-20..20) do
 	puts shift(input, i) + " (Shift " + i.to_s + ")"
 end
