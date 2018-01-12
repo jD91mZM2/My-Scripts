@@ -27,6 +27,6 @@ end
 print "Input: "
 input = gets.chomp.upcase
 
-for i in (-20..20) do
+for i in (-13..12) do
 	puts shift(input, i) + " (Shift " + i.to_s + ")"
 end

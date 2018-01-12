@@ -30,7 +30,7 @@ input = gets.chomp.upcase
 words = File.read("/usr/share/dict/words").lines.map{|word| word.strip.upcase}
 
 range = 'Z'.ord - 'A'.ord
-for i in (-range..range) do
+for i in (-range/2..range/2-1) do
     next if i == 0
     shifted = shift input, i
     if words.include? shifted
