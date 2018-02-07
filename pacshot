@@ -10,8 +10,8 @@ print)
     if [ ! -f "$path" ]; then
         echo "No state saved"
     fi
-    installed=( $(comm -13 <(sort "$path") <(pacman -Qq | sort)) )
-    uninstalled=( $(comm -23 <(sort "$path") <(pacman -Qq | sort)) )
+    readarray -t installed   < <(comm -13 <(sort "$path") <(pacman -Qq | sort))
+    readarray -t uninstalled < <(comm -23 <(sort "$path") <(pacman -Qq | sort))
 
     if [ ${#installed[@]} != 0 ]; then
         echo "Installed packages:"
@@ -26,8 +26,8 @@ restore)
     if [ ! -f "$path" ]; then
         echo "No state saved"
     fi
-    installed=( $(comm -13 <(sort "$path") <(pacman -Qq | sort)) )
-    uninstalled=( $(comm -23 <(sort "$path") <(pacman -Qq | sort)) )
+    readarray -t installed   < <(comm -13 <(sort "$path") <(pacman -Qq | sort))
+    readarray -t uninstalled < <(comm -23 <(sort "$path") <(pacman -Qq | sort))
 
     if [ ${#installed[@]} != 0 ]; then
         sudo pacman -R ${installed[@]}
