@@ -1,0 +1,48 @@
+#!/bin/bash
+
+path="$HOME/.pacshot"
+
+case "$1" in
+save)
+    pacman -Qq > "$path"
+    ;;
+print)
+    if [ ! -f "$path" ]; then
+        echo "No state saved"
+    fi
+    installed=( $(comm -13 <(sort "$path") <(pacman -Qq | sort)) )
+    uninstalled=( $(comm -23 <(sort "$path") <(pacman -Qq | sort)) )
+
+    if [ ${#installed[@]} != 0 ]; then
+        echo "Installed packages:"
+        echo "${installed[@]}"
+    fi
+    if [ ${#uninstalled[@]} != 0 ]; then
+        echo "Uninstalled packages:"
+        echo "${uninstall[@]}"
+    fi
+    ;;
+restore)
+    if [ ! -f "$path" ]; then
+        echo "No state saved"
+    fi
+    installed=( $(comm -13 <(sort "$path") <(pacman -Qq | sort)) )
+    uninstalled=( $(comm -23 <(sort "$path") <(pacman -Qq | sort)) )
+
+    if [ ${#installed[@]} != 0 ]; then
+        sudo pacman -R ${installed[@]}
+    fi
+    if [ ${#uninstalled[@]} != 0 ]; then
+        sudo pacman -S ${uninstalled[@]}
+    fi
+    ;;
+help)
+    echo "Modes:"
+    echo "save    - Save your current package state to a file"
+    echo "print   - Print the difference between the saved state and the current"
+    echo "restore - Revert to your saved state"
+    ;;
+**)
+    echo "Unknown option"
+    echo "See \`pacshot help\` for help"
+esac
