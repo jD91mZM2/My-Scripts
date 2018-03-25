@@ -11,7 +11,7 @@ while true do
 	end
 	dic = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	text = ""
-	for i in 1..15
+	for _ in 1..15
 		text += dic[rand(dic.length)]
 	end
 	system("xdotool type " + text)

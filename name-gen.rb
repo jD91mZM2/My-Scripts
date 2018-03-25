@@ -15,7 +15,7 @@ end
 result = ""
 consonants = 1
 vocals = 0
-for i in 1..(rand(max_length - 3) + 3) do
+for _ in 1..(rand(max_length - 3) + 3) do
 	if vocals > 1 || rand(2) == 0 && consonants <= 1 then
 		result += consonant[rand(consonant.length)]
 		consonants += 1

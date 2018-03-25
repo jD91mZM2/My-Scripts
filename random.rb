@@ -15,7 +15,7 @@ end
 
 dic = "abcdefghiklmnopqrstuvwxyzABCDEFGHIKLMNOPQRSTUVWXYZ0123456789"
 result = ""
-for i in 1..ilen
+for _ in 1..ilen
     result += dic[rand(dic.length)]
 end
 puts result
