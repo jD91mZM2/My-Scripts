@@ -25,4 +25,8 @@ search() {
 	esac
 	search "$min" "$max"
 }
-search 1 3000000000
+echo -n "Min: "
+read min
+echo -n "Max: "
+read max
+search "$min" "$max"
