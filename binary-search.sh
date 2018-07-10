@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-search() {
-	min="$1"
-	max="$2"
+echo -n "Min: "
+read min
+echo -n "Max: "
+read max
 
+while true; do
 	if (( "$min" > "$max" )); then
 		echo "such prank much wow" 1>&2
 		exit
@@ -23,10 +25,4 @@ search() {
 		correct)
 			exit
 	esac
-	search "$min" "$max"
-}
-echo -n "Min: "
-read min
-echo -n "Max: "
-read max
-search "$min" "$max"
+done
