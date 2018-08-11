@@ -6,7 +6,7 @@ print "Shift: "
 shift = Integer(gets.chomp)
 
 result = ""
-for char in input.split("")
+for char in input.chars
 	if char == ' '
 		result += ' '
 		next
