@@ -1,0 +1,24 @@
+#!/bin/sh
+
+LOCAL="$1"
+NAME="$2"
+
+if [ -z "$LOCAL" ] || [ -z "$NAME" ]; then
+    echo "send-to-ssh <directory> <name>"
+    exit
+fi
+
+HOST="user@51.15.253.92"
+REMOTE="Coding/$NAME"
+
+rsync -avzhP . "$HOST:$REMOTE" --exclude "target" --exclude "*.sqlite" --delete
+
+ssh "$HOST" <<EOF
+cd "$HOME/$REMOTE"
+nix-shell --run "cargo build --release"
+
+tmux kill-session -t $NAME
+tmux new -d -s $NAME "target/release/$NAME; zsh"
+EOF
+
+echo "Updated!"
