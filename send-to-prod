@@ -4,21 +4,29 @@ LOCAL="$1"
 NAME="$2"
 
 if [ -z "$LOCAL" ] || [ -z "$NAME" ]; then
-    echo "send-to-ssh <directory> <name>"
+    echo "send-to-prod <directory> <name>"
     exit
 fi
 
-HOST="user@51.15.253.92"
+HOST="scaleway"
 REMOTE="Coding/$NAME"
 
-rsync -avzhP . "$HOST:$REMOTE" --exclude "target" --exclude "*.sqlite" --delete
+rsync -avzhP . "$HOST:$REMOTE" --exclude-from=- --delete <<EOF
+*.sqlite
+__pycache__
+target/
+EOF
 
 ssh "$HOST" <<EOF
 cd "$HOME/$REMOTE"
-nix-shell --run "cargo build --release"
 
-tmux kill-session -t $NAME
-tmux new -d -s $NAME "target/release/$NAME; zsh"
+tmux kill-session -t "$NAME"
+
+if [ -f Cargo.toml ]; then
+    tmux new -d -s "$NAME" 'nix-shell --run "cargo run --release; zsh"'
+elif [ -f main.py ]; then
+    tmux new -d -s "$NAME" 'source ../activate.sh && pip install -Ur requirements.txt && python main.py; zsh'
+fi
 EOF
 
 echo "Updated!"
