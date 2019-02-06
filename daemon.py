@@ -31,10 +31,12 @@ while True:
     old_fg = os.tcgetpgrp(sys.stdin.fileno())
     # Set process group
     os.setpgid(pid, pid)
-    os.tcsetpgrp(sys.stdin.fileno(), pid)
 
-    # Wait for exit or suspension
     while True:
+        # Set process group to leader (must apparently be done after SIGSTOP)
+        os.tcsetpgrp(sys.stdin.fileno(), pid)
+
+        # Wait for process to exit or be suspended
         _, exit = os.waitpid(-pid, os.WUNTRACED)
         if os.WIFSTOPPED(exit):
             # If child is stopped, stop self and restart child when woken up.
