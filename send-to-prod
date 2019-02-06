@@ -17,7 +17,9 @@ __pycache__
 target/
 EOF
 
-ssh "$HOST" <<EOF
+# Using a login shell is important to avoid issues with environment variables
+# in ~/.bash_profile not being read.
+ssh "$HOST" bash -l <<EOF
 cd "$HOME/$REMOTE"
 
 tmux kill-session -t "$NAME"
@@ -25,7 +27,7 @@ tmux kill-session -t "$NAME"
 if [ -f Cargo.toml ]; then
     tmux new -d -s "$NAME" 'nix-shell --run "cargo run --release; zsh"'
 elif [ -f main.py ]; then
-    tmux new -d -s "$NAME" 'source ../activate.sh && pip install -Ur requirements.txt && python main.py; zsh'
+    tmux new -d -s "$NAME" 'source ../activate.sh && pip install -Ur requirements.txt && daemon.py python main.py; zsh'
 fi
 EOF
 
