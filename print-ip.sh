@@ -2,7 +2,7 @@
 
 while true; do
     printf "Checking...\r"
-    curl http://bot.whatismyipaddress.com/
+    curl -s https://api.ipify.org
     echo
     sleep 5
 done
