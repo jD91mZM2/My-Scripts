@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
 
-import curses, signal, subprocess, sys
+import curses
+import signal
+import subprocess
+import sys
+
 
 ALL_SERVICES = list(map(
     lambda s: s.split(' ')[0],
-    subprocess.run(["systemctl", "list-unit-files", "openvpn-*", "-t", "service"], capture_output=True, text=True)
-        .stdout.splitlines()
+    subprocess.run(
+        ["systemctl", "list-unit-files", "openvpn-*", "-t", "service"],
+        capture_output=True, text=True
+    ).stdout.splitlines()
 ))
+
+
+signal.signal(signal.SIGINT, lambda signum, stackframe: sys.exit())
+
 
 def reconnect(endpoint):
     subprocess.run(["sudo", "systemctl", "stop", "openvpn-*.service"])
     subprocess.run(["sudo", "systemctl", "start", endpoint])
     pass
 
-signal.signal(signal.SIGINT, lambda signum, stackframe: sys.exit())
 
 def main_curses(s):
     query = ""
@@ -24,7 +33,12 @@ def main_curses(s):
     max_y, max_x = s.getmaxyx()
 
     while True:
-        units = list(filter(lambda s: s.startswith("openvpn-" + query), ALL_SERVICES))
+        units = sorted(filter(
+            lambda s: s.startswith("openvpn-" + query),
+            ALL_SERVICES
+        ), key=lambda s: (
+            (1 if "tcp" in s else 0, s)
+        ))
 
         s.clear()
         s.addstr(0, 0, "> openvpn-" + query)
@@ -43,6 +57,7 @@ def main_curses(s):
             query += key
         else:
             s.addstr(1, 0, str(key))
+
 
 endpoint = curses.wrapper(main_curses)
 if endpoint is not None:
