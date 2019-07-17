@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Crazy little script which recurses git submodules and stashes all
+# changes. It tries your best not to eat your laundry by keeping track
+# which stashes succeeded (should also work on error). Of course, if
+# it *does* eat your laundry, please let me know but don't hold me
+# responsible for any data loss.
+
+set -e
+
+if [ -z "$1" ]; then
+    git submodule foreach --recursive "\"$0\" called-by-git-foreach"
+    echo "Stashing main repository"
+    "$0" called-by-git-foreach
+elif [ "$1" == "pop" ]; then
+    git submodule foreach --recursive "\"$0\" called-by-git-foreach-pop"
+    echo "Popping main repository"
+    "$0" called-by-git-foreach-pop
+elif [ "$1" == "called-by-git-foreach-pop" ]; then
+    if [ -e ".git-stashed-all-marker" ]; then
+        # Ugly way to un-ignore this file, see below. Needs to be two
+        # separate commands or it won't update correctly
+        git update-index --no-assume-unchanged .git-stashed-all-marker
+        git update-index --force-remove .git-stashed-all-marker
+
+        rm .git-stashed-all-marker
+        git stash pop
+    fi
+elif [ "$1" == "called-by-git-foreach" ]; then
+    before="$(git stash list | wc -l)"
+    git stash push -u -m "Stashed by git-stash-all"
+    after="$(git stash list | wc -l)"
+
+    if (( $after > $before )); then
+        touch .git-stashed-all-marker
+
+        # Ugly way to ignore this file without using .gitignore or
+        # anything inside .git/ (submodules have .git as a file - not a
+        # directory)
+        git update-index --add .git-stashed-all-marker --assume-unchanged .git-stashed-all-marker
+    fi
+fi
