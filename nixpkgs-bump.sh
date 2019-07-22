@@ -6,6 +6,7 @@ cd ~/nixpkgs
 git fetch origin
 if ! git checkout -b "$1" origin/master; then
     git checkout "$1"
+    git rebase origin/master
 fi
 
 path="$(nix eval --raw '(builtins.elemAt (builtins.split ":" (import ./. {}).'"$1"'.meta.position) 0)')"
